@@ -5,9 +5,9 @@
       matInput
       type="search"
       placeholder="Search for books to add to your reading list"
-      formControlName="term"
+      formControlName="term" 
     />
-    <button mat-icon-button matSuffix>
+    <button mat-icon-button matSuffix aria-label="Search" >
       <mat-icon>search</mat-icon>
     </button>
   </mat-form-field>
@@ -16,20 +16,20 @@
 <ng-container *ngIf="searchTerm; else empty">
   <div class="book-grid">
     <div class="book" data-testing="book-item" *ngFor="let b of books">
-      <div class="book--title">
+      <div class="book--title" [attr.aria-label]="b.title">
         {{ b.title }}
       </div>
       <div class="book--content">
         <div class="book--content--cover">
-          <img src="{{ b.coverUrl }}" />
+          <img src="{{ b.coverUrl }}" alt="Cover Image of book"/>
         </div>
         <div class="book--content--info">
-          <div><strong>Author:</strong> {{ b.authors.join(',') }}</div>
-          <div><strong>Publisher:</strong> {{ b.publisher }}</div>
-          <div>
+          <div [attr.aria-label]="b.authors.join(',')"><strong>Author:</strong> {{ b.authors.join(',') }}</div>
+          <div [attr.aria-label]="b.publisher "><strong>Publisher:</strong> {{ b.publisher }}</div>
+          <div  [attr.aria-label]="b.publishedDate">
             <strong>Published:</strong> {{ formatDate(b.publishedDate) }}
           </div>
-          <p [innerHTML]="b.description"></p>
+          <p [attr.aria-label]="b.description" [innerHTML]="b.description"></p>
           <div>
             <button
               mat-flat-button
@@ -49,8 +49,7 @@
   <div class="empty">
     <p>
       Try searching for a topic, for example "<a (click)="searchExample()"
-        >JavaScript</a
-      >".
+        >JavaScript</a>".
     </p>
   </div>
 </ng-template>

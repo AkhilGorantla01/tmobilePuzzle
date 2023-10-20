@@ -12,5 +12,5 @@ export class TotalCountComponent implements OnInit {
 
   constructor(private readonly store: Store) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void { /* TODO document why this method 'ngOnInit' is empty */ }
 }
