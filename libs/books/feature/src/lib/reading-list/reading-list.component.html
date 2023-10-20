@@ -9,15 +9,26 @@
         {{ b.authors.join(',') }}
       </div>
     </div>
-    <div>
+    <div class = "flex">
       <button
         mat-icon-button
         color="warn"
         [attr.aria-label]="'Remove ' + b.title + ' from reading list'"
         (click)="removeFromReadingList(b)"
+        data-testing="remove-book-item"
       >
         <mat-icon>remove_circle</mat-icon>
       </button>
+      <button
+      mat-icon-button
+      color="green"
+      (click)="finishFromReadingList(b)"
+      *ngIf = "!b.finished"
+      data-testing="finish-book-item"
+      >
+      <mat-icon>done</mat-icon>
+    </button>
+    <div *ngIf = "b.finished" data-testing="finish-book-date">  Finished Date:{{b.finishedDate}} </div> 
     </div>
   </div>
 </ng-container>
