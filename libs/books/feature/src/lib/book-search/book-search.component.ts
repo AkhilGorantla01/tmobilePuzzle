@@ -52,8 +52,9 @@ export class BookSearchComponent implements OnInit {
     this.searchBooks();
   }
 
-  searchBooks() {
+  async searchBooks() {
     if (this.searchForm.value.term) {
+      await new Promise(f => setTimeout(f, 500));
       this.store.dispatch(searchBooks({ term: this.searchTerm }));
     } else {
       this.store.dispatch(clearSearch());
