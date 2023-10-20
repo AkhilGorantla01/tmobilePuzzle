@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { getReadingList, removeFromReadingList } from '@tmo/books/data-access';
+import { getReadingList, removeFromReadingList, getAllBooks,ReadingListBook,addToReadingList } from '@tmo/books/data-access';
+import { Book, ReadingListItem } from '@tmo/shared/models';
+import {MatSnackBar} from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'tmo-reading-list',
@@ -9,10 +12,31 @@ import { getReadingList, removeFromReadingList } from '@tmo/books/data-access';
 })
 export class ReadingListComponent {
   readingList$ = this.store.select(getReadingList);
+  books: ReadingListBook[];
+  readingItems: ReadingListItem[];
 
-  constructor(private readonly store: Store) {}
 
-  removeFromReadingList(item) {
-    this.store.dispatch(removeFromReadingList({ item }));
+  constructor(private readonly store: Store,
+    private _snackBar: MatSnackBar) {}
+
+    openSnackBar(message: string, action: string) {
+      this._snackBar.open(message, action);
+    }
+
+    ngOnInit(): void {
+      this.store.select(getAllBooks).subscribe(books => {
+        this.books = books;
+      });
+  
+      this.store.select(getReadingList).subscribe(readingList => {
+        this.readingItems = readingList;
+      });
+    }
+
+  removeFromReadingList(book: Book) {
+   const item = this.readingItems.filter(x=> x.bookId === book.id)[0];
+   this.store.dispatch(removeFromReadingList( {item} ));
+   const snackBarRef = this._snackBar.open("Removed from  Reading List","Undo", { duration: 3000 });
+   snackBarRef.onAction().subscribe(()=>this.store.dispatch(addToReadingList({ book })) )
   }
 }
